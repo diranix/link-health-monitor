@@ -1,0 +1,36 @@
+# Environment files - НІКОЛИ не пушити
+.env
+.env.*
+*.env
+
+# Ansible secrets
+ansible/inventory.ini
+ansible/vault_pass.txt
+**/vault*.yml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Keys and certs
+*.pem
+*.key
+*.crt
+id_rsa
+id_ed25519
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
