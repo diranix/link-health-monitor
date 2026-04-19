@@ -1,0 +1,9 @@
+# Всі файли — власник за замовчуванням
+* @diranix
+
+# Критичні security файли
+.github/workflows/ @diranix
+ansible/ @diranix
+security/ @diranix
+docker-compose.yml @diranix
+.gitignore @diranix
