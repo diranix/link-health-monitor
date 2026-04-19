@@ -22,6 +22,7 @@ venv/
 *.crt
 id_rsa
 id_ed25519
+*.asc
 
 # OS
 .DS_Store
@@ -30,8 +31,8 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+.zed/
 
 # Logs
 *.log
 logs/
-*.asc
