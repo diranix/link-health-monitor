@@ -46,3 +46,30 @@ jobs:
             p/python
             p/docker
             p/github-actions
+
+sca:
+  name: SCA
+  runs-on: ubuntu-latest
+  needs: sast
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install Safety
+      run: pip install safety
+
+    - name: Safety check
+      run: |
+        safety check -r app/requirements.txt
+
+    - name: Trivy SCA
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: fs
+        scan-ref: .
+        scanners: vuln
+        severity: CRITICAL,HIGH
