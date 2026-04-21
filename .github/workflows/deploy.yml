@@ -25,6 +25,8 @@ jobs:
     needs: secrets-scan
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -40,6 +42,10 @@ jobs:
             p/python
             p/docker
             p/github-actions
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   sca:
     name: SCA
