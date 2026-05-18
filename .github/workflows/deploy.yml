@@ -54,7 +54,7 @@ jobs:
       - name: Install Safety
         run: pip install safety
       - name: Safety check
-        run: safety check -r app/requirements.txt
+        run: safety scan -r app/requirements.txt
       - name: Trivy SCA
         uses: aquasecurity/trivy-action@master
         with:
