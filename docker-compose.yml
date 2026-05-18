@@ -1,0 +1,67 @@
+services:
+  api:
+    build: .
+    container_name: lhm-api
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - lhm-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: lhm-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lhm
+      POSTGRES_USER: lhm
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lhm"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lhm-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: lhm-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - lhm-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: lhm-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - lhm-network
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  lhm-network:
+    driver: bridge
